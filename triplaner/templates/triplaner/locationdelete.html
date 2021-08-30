@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Delete location{% endblock %}
+
+{% block content %}
+
+            <h1>Delete location</h1>
+            <p> </p>
+
+
+        <form method="post">
+
+            {{ form.as_p }}
+            {% csrf_token %}
+        Are you want to delete this item ?
+        <p><input type="submit" value="Yes"></p>
+        </form>
+
+   
+            
+{% endblock %}

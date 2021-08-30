@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Hotel add{% endblock %}
+
+{% block content %}
+
+            <h1>Add Hotel in {{ destination }}</h1>
+            <p> </p>
+
+
+        <form method="post">
+
+            {{ form.as_p }}
+            {% csrf_token %}
+        
+        <p><input type="submit" value="Save changes"></p>
+        </form>
+
+   
+            
+{% endblock %}

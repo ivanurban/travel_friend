@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Location{% endblock %}
+
+{% block content %}
+
+            <h1>Edit trip</h1>
+            <p></p>
+
+
+
+            <form method="post">
+  
+                {{ form.as_p }}
+                {% csrf_token %}
+             <input type="hidden" name="next" value="{{ request.path }}">
+             <p><input type="submit" value="Save changes"></p>
+             </form>
+   
+            
+{% endblock %}

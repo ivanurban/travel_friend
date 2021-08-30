@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Location{% endblock %}
+
+{% block content %}
+
+<h1>Add new location</h1>
+<p></p>
+
+
+
+        <form method="post">
+
+            {{ form.as_p }}
+            {% csrf_token %}
+        
+        <p><input type="submit" value="Save changes"></p>
+        </form>
+
+
+
+
+   
+            
+{% endblock %}

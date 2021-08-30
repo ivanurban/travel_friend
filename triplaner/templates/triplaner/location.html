@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Location{% endblock %}
+
+{% block content %}
+
+            <h1>Locations</h1>
+            <p>Your locations for trip to <b>{{ trip.name }}</b> <!--id - trip:{{ trip.id }}-->
+<!--           
+                                                  {{ trip.slug }} -ZASTO SE NE vidi? -->
+
+                                                 <!-- trip_pk {{trip.pk}} -->
+
+                {% for l in locations|slice:"1" %}
+
+                    cost of trip {{ l.get_costs_by_trip }}
+
+                                                                   <!-- location_pk   {{l.pk}} -->
+
+
+                {% endfor %}
+          
+          </p>
+     
+<!--     
+
+         Hotel   {{ hotel_prices }}
+         Flight {{ flight_prices }}
+         User  {{ user }} -->
+
+      
+       <!-- Loop through all locations in specific country - added trip -->
+       {% for l in locations %}
+
+          
+    
+       
+         Trip to {{ l.location }} costs: {{ l.get_costs_by_location }}
+
+         
+         
+
+
+          <!-- using get_hotel function to display add hotel od edit hotel link that takes you to add hotel to specific destination -->
+
+          <!-- if destination does not have added hotel show link add hotel -->
+          {% if not l.get_hotel %}
+
+          <ul>
+               <li><b>{{ l.location }} <!--id:{{ l.id }} --> </b>
+                    |
+                    <a href="{% url 'triplaner:locationedit'  pk=l.pk %}"> edit location</a>
+                    |
+                   <a href="{% url 'triplaner:locationdelete'  pk=l.pk %}"> delete location</a>
+               
+               
+               </li>
+               <br>
+             
+               <ul>
+                    <li><a href="{% url 'triplaner:hoteladd' pk=l.pk %}">add hotel</a></li>
+               </ul>
+             
+          </ul>
+
+          <!-- if destination has added hotel display name price ande time of staying there -->
+          {% else %}
+
+               <!-- Loop through returnd queryset of hotel and display data  -->
+               {% for h in l.get_hotel %}
+
+                              <!-- {"prozent" if l.location|stringformat:'s' == h.destination|stringformat:'s' %} -->   
+                         <ul>
+
+                         
+
+                              <li> <b>{{ l.location }}</b>
+                                   |
+                                   <a href="{% url 'triplaner:locationedit'  pk=l.pk %}"> edit location</a>
+                                   |
+                                  <a href="{% url 'triplaner:locationdelete'  pk=l.pk %}"> delete location</a>
+                              
+                              
+                              </li>
+                              <br>
+
+
+                                   <ul>
+
+                                        <li> <b>Hotel</b>: {{ h.name }}, <b>check-in</b>: {{ h.check_in_date }},
+                                             <b>check-out</b>:{{ h.check_out_date }}, <b>price</b>: {{ h.price }} 
+                                             |
+                                             <a href="{% url 'triplaner:hoteledit' pk=h.pk %}">edit hotel</a> 
+                                             | 
+                                             <a href="{% url 'triplaner:hoteldelete' pk=h.pk %}">delete hotel</a> 
+                                        
+                                        
+                                        </li>
+                                   
+                                   </ul>
+
+                      
+
+                         </ul> 
+
+               
+
+               {% endfor %}
+
+          {% endif %}
+
+
+
+           {% if not l.get_flight %}
+
+
+                                        
+                    <ul>
+                         <ul>
+
+                         <li><a href="{% url 'triplaner:flightadd' pk=l.id %}">add flight to {{l.location}} </a></li> <!--to add you need location pk -->
+                         </ul>
+                    
+
+                    </ul>
+
+           {% else %}
+
+                    {% for f in l.get_flight %}
+
+                    <ul>
+
+                         <ul>
+
+                         <li>  <b>Flight</b> - <b>From</b>: {{ f.from_destination }}, <b>To</b>: {{ f.destination }},
+                              <b>Departure</b>: {{ f.date_time }}, <b>price</b>: {{ f.price }}
+                              |
+                              <a href="{% url 'triplaner:flightedit' pk=f.pk %}">edit flight</a> <!--to edit you need flight pk -->
+                              |
+                              <a href="{% url 'triplaner:flightdelete' pk=f.pk %}">delete flight</a> 
+                         
+                         
+                         </li>
+
+                         </ul>
+
+                    </ul> 
+
+
+
+
+                    {% endfor %}
+
+
+           {% endif %}
+
+
+
+
+
+<hr>
+
+
+            
+
+       {% endfor %}
+
+
+                    
+<!-- 
+          passing id in url to add new location page -->
+       <a href="{% url 'triplaner:locationadd' pk=trip.id %}">add new location</a>
+   
+            
+{% endblock %}
