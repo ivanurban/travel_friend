@@ -5,7 +5,7 @@
 {% block content %}
 
             <h1>Add new trip</h1>
-            <p></p>
+            
 
 
 
@@ -13,7 +13,7 @@
   
                 {{ form.as_p }}
                 {% csrf_token %}
-             <!-- <input type="hidden" name="next" value="{{ request.path }}"> -->
+            
              <p><input type="submit" value="Save changes"></p>
              </form>
    

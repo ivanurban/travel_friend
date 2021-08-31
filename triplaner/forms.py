@@ -15,6 +15,9 @@ class TripAddModelForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = ['name', 'start_date']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'class':'datepicker'}),
+        }
 
 class DestinationAddModelForm(forms.ModelForm):
     class Meta:
@@ -26,6 +29,10 @@ class FlightAddModelForm(forms.ModelForm):
     class Meta:
         model = Flight
         fields = ['from_destination','destination','date_time','price']
+        widgets = {
+            'date_time': forms.DateInput(attrs={'class':'datepicker'}),
+        }
+
     
 
 
@@ -33,3 +40,7 @@ class HotelAddModelForm(forms.ModelForm):
     class Meta:
         model = Hotel
         fields = ['name', 'price','check_in_date','check_out_date']
+        widgets = {
+            'check_in_date': forms.DateInput(attrs={'class':'datepicker'}),
+            'check_out_date': forms.DateInput(attrs={'class':'datepicker'}),
+        }

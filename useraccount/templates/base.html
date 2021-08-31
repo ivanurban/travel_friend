@@ -1,5 +1,8 @@
 {% load static %}
 
+<!-- loading custom tags for budget and costs -->
+{% load budget_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +10,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- date picker is used on all pages for enterind dates -->
+    <script>
+    $( function() {
+      $( "#datepicker" ).datepicker();
+    } );
+    </script>
   
+
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
-</head>
-<body>
+   
+
 
 </head>
 <body>
@@ -27,14 +40,6 @@
 
                  </li>
 
-              <li {% if section == 'images' %}class="selected"{% endif %}>
-              <a href="#">Images</a>
-              </li>
-              <li {% if section == 'people' %}class="selected"{% endif %}>
-              <a href="#">People</a>
-              </li>
-
-
               </ul>
               {% endif %}
 
@@ -48,12 +53,56 @@
               </span>
 
         </div>
+
+
+        <!-- Overall costs an users budget are displayed , when user is over the budget a warning message appears -->
+        <div class="budget-costs">
+
+          {% if request.user.is_authenticated %}
+          <div class="my_budget">
+
+           <p>{% my_budget %}</p> 
+    
+          </div>
+
+                     
+        <div class="warning">
+          <p><b>You have exceeded your budget</b></p>
+        </div>
+
+          <div class="my_costs">
+
+            <p>
+              {% my_cost %}</p>
+
+          </div>
+          {% endif %}
+        </div>
+     
+  
+                     
+        <!-- here is where the content of pages that extend base.html goes -->
         <div id="content">
+
+     
         {% block content %}
 
+   
 
         {% endblock %}
+
       </div>
+
+
+
+<!-- import static js files -->
+
+ <!-- warning message when user is over the budget -->
+ <script src="{% static 'js/warning.js' %}"></script> 
+
+
+ <!-- date picker for all date fields in the app -->
+<script src="{% static 'js/datepicker.js' %}"></script>
 </body>
 </html>
     

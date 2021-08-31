@@ -1,23 +1,14 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+
+
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 
-            <h1>My Profile</h1>
-
-        <div class="welcome-warning">
-
-                <div class="welcome">
-
-                        <p>Welcome to your profile page.</p> 
-                </div>
-             <div class="warning">
-                <p><b>You have exceeded your budget</b></p>
-             </div>
-               
-        </div>
-            
+            <h1>My Profile </h1>
 
 
 
@@ -25,25 +16,12 @@
 
                 <div class="trip-list">
 
-        
-
-
-                    <!-- Going only once through loop with slice "1" to show Cost for all trips together -->
-                    {% for cost in all_trips|slice:"1" %}
-
-                 <p> Cost of all of your trips: <span class="cost">{{ cost.get_all_costs }}</span></p>  
-                     
-                        {% endfor %}
-
-             
 
 
                     <!-- Showing oveerview of all of of trips -->
                     {% for trip in all_trips %}
 
-                    <p>You are going to: </p>
-
-                     
+                
         
                         <ul>
         
@@ -76,63 +54,16 @@
 
                 </div>
 
-                <div class="my-budget" readonly>
 
-                        <!-- {{ budget }} -->
-                       <span class="budget"> {{ profile_form.as_p }}</span>
-
-                        <p><a href="{% url 'useraccount:edit' %}">edit your budget</a></p>
-
-                </div>
-
-
-
-
+        
 
 
         </div>
 
 
 
-
-        <script>
-
-
-                let costs = document.querySelector(".cost").innerHTML;
-                
-                
-                let budget = document.getElementById("id_budget").value;
-
-                let warningDiv = document.querySelector(".warning");
-
-                console.log(warningDiv)
-
-             
-
-                console.log(costs);
-
-                console.log(budget);
-
-                costs = parseFloat(costs)
-
-                budget = parseFloat(budget)
-
-                if (costs > budget){
-
-                        warningDiv.style.display = "block"
-                }
-
-
-                console.log(costs);
-
-                console.log(budget);
-                
-                
-                </script>
-            
+        
 {% endblock %}
-<!-- 
-<p><label for="id_budget">Budget:</label> 
-<input type="number" name="budget" value="5000.00" step="0.01" id="id_budget"></p> -->
+
 
 

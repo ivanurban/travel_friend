@@ -9,22 +9,10 @@ from .forms import TripAddModelForm, DestinationAddModelForm, HotelAddModelForm,
 
 from django.urls import reverse, reverse_lazy
 
+from useraccount.forms import  ProfileEditForm
 
 from django.db.models import Sum #used to calculate prices
 
-
-#getting trip_id fields for reverse urls
-def get_tripid(destination):
-    t = Trip.objects.get(name=destination.trip)
-    d = Destination.objects.get(trip=t)
-    tripid =  d.trip_id
-    return tripid
-
-def get_tripid_for_hotel_flights(obj):
-    destinationid = obj.destination_id
-    obj2 = Destination.objects.get(id=destinationid)
-    tripid = obj2.trip_id
-    return tripid
 
 ######CREATE######
 
@@ -71,9 +59,10 @@ def location_add(request, pk):
 #Adding Hotel for location
 @login_required
 def hotel_add(request, pk):
-    #getting qs for Destinatin for specifiied pk
+    
     destination = Destination.objects.get(pk=pk)
-    tripid = get_tripid(destination)
+    tripid = destination.trip_id
+
     form = HotelAddModelForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
@@ -92,8 +81,10 @@ def hotel_add(request, pk):
 #Adding Flights 
 @login_required
 def flight_add(request,pk):
+
     destination = Destination.objects.get(pk=pk)
-    tripid = get_tripid(destination)
+    tripid = destination.trip_id
+
     form = FlightAddModelForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
@@ -112,8 +103,13 @@ def flight_add(request,pk):
 @login_required
 def location(request, pk):
     
-    user = request.user
 
+    if ProfileEditForm(instance=request.user.profile):
+    
+        form = ProfileEditForm(instance=request.user.profile)
+        budget = form['budget'].value()
+
+    user = request.user
     #get trip based on the passed pk
     trip = Trip.objects.get(id=pk)
 
@@ -127,17 +123,15 @@ def location(request, pk):
 
     template_name =  'triplaner/location.html'
     context = {'locations':locations, 'trip': trip, 'user':user,
-    'hotel':hotel, 'flight':flight}
+    'hotel':hotel, 'flight':flight, 'budget':budget }
     return render(request, template_name, context )
-
-
-
 
 
 ######UPDATE######
 @login_required
 def trip_edit(request, pk):
     # fetch the object related to passed id
+    
     obj = get_object_or_404(Trip, pk=pk)
     # pass the object as instance in form
     form = TripAddModelForm(request.POST or None, instance=obj)
@@ -157,7 +151,9 @@ def trip_edit(request, pk):
 def location_edit(request,pk):
     # fetch the object related to passed id
     obj = get_object_or_404(Destination, pk=pk)
-    tripid = get_tripid(obj)
+    
+    tripid = obj.trip_id
+  
     # pass the object as instance in form
     form = DestinationAddModelForm(request.POST or None, instance=obj)
     # save the data from the form and
@@ -173,23 +169,9 @@ def hotel_edit(request,pk):
 
     # fetch the object Hotel related to passed id
     obj = get_object_or_404(Hotel, pk=pk)
-
-    tripid = get_tripid_for_hotel_flights(obj)
-
-    #print(obj.destination)
-    #take id of location which is foreign key in Hotel
-    # destinationid = obj.destination_id
-    # # obj2 = obj.destination_id
-    # # print(obj2)
-    # #take objects from destination based on id
-    # obj2 = Destination.objects.get(id=destinationid)
-    # # print(daj.trip)
-    # # print(daj.pk)
-    # # dajTrip = Trip.objects.get(name=daj.trip)
-    # # print(dajTrip.pk)
-    # tripid = obj2.trip_id
-   
-  
+    obj2 = get_object_or_404(Destination, pk=obj.destination_id)
+    tripid = obj2.trip_id
+    
     # pass the object as instance in form
     form = HotelAddModelForm(request.POST or None, instance=obj)
 
@@ -205,9 +187,11 @@ def hotel_edit(request,pk):
 def flight_edit(request, pk):
     # fetch the object related to passed id
     obj = get_object_or_404(Flight, pk=pk)
+    obj2 = get_object_or_404(Destination, pk=obj.destination_id)
+    tripid = obj2.trip_id
 
     
-    tripid = get_tripid_for_hotel_flights(obj)
+    #tripid = get_tripid_for_hotel_flights(obj)
     
     # pass the object as instance in form
     form = FlightAddModelForm(request.POST or None, instance=obj)
@@ -239,7 +223,8 @@ def trip_delete(request, pk):
 def location_delete(request, pk):
     # fetch the object related to passed id
     obj = get_object_or_404(Destination, pk=pk)
-    tripid = get_tripid(obj)
+    tripid = obj.trip_id
+   
     if request.method=='POST':
         #delete object
         obj.delete()
@@ -253,9 +238,8 @@ def location_delete(request, pk):
 def hotel_delete(request, pk):
     # fetch the object related to passed id
     obj = get_object_or_404(Hotel, pk=pk)
-
-
-    tripid = get_tripid_for_hotel_flights(obj)
+    obj2 = get_object_or_404(Destination, pk=obj.destination_id)
+    tripid = obj2.trip_id
 
     if request.method=='POST':
         #delete object
@@ -270,9 +254,8 @@ def hotel_delete(request, pk):
 def flight_delete(request, pk):
     # fetch the object related to passed id
     obj = get_object_or_404(Flight, pk=pk)
-
-
-    tripid = get_tripid_for_hotel_flights(obj)
+    obj2 = get_object_or_404(Destination, pk=obj.destination_id)
+    tripid = obj2.trip_id
 
     if request.method=='POST':
         #delete object

@@ -1,44 +1,40 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}Location{% endblock %}
+
 
 {% block content %}
 
+
             <h1>Locations</h1>
-            <p>Your locations for trip to <b>{{ trip.name }}</b> <!--id - trip:{{ trip.id }}-->
-<!--           
-                                                  {{ trip.slug }} -ZASTO SE NE vidi? -->
 
-                                                 <!-- trip_pk {{trip.pk}} -->
-
-                {% for l in locations|slice:"1" %}
-
-                    cost of trip {{ l.get_costs_by_trip }}
-
-                                                                   <!-- location_pk   {{l.pk}} -->
-
-
-                {% endfor %}
-          
-          </p>
      
-<!--     
+     
+          <div class="welcome">
 
-         Hotel   {{ hotel_prices }}
-         Flight {{ flight_prices }}
-         User  {{ user }} -->
+               <p>Your locations for trip to {{ trip.name }} 
+
+                    <!-- slice is used to show only one occurence, only one cost of trip is nedded here -->
+                    {% for l in locations|slice:"1" %}
+
+                    / Cost of your trip to {{ trip.name }} is {{ l.get_costs_by_trip }}
+                    
+                     {% endfor %}
+
+
+
+          </div>
 
       
-       <!-- Loop through all locations in specific country - added trip -->
+<div class="location-container">
+
+      
+       <!-- Loop through all locations in specific country a.k.a added trip -->
        {% for l in locations %}
-
-          
-    
        
-         Trip to {{ l.location }} costs: {{ l.get_costs_by_location }}
-
-         
-         
+         trip to {{ l.location }} costs: {{ l.get_costs_by_location }}
 
 
           <!-- using get_hotel function to display add hotel od edit hotel link that takes you to add hotel to specific destination -->
@@ -87,15 +83,23 @@
 
                                    <ul>
 
-                                        <li> <b>Hotel</b>: {{ h.name }}, <b>check-in</b>: {{ h.check_in_date }},
-                                             <b>check-out</b>:{{ h.check_out_date }}, <b>price</b>: {{ h.price }} 
-                                             |
-                                             <a href="{% url 'triplaner:hoteledit' pk=h.pk %}">edit hotel</a> 
-                                             | 
-                                             <a href="{% url 'triplaner:hoteldelete' pk=h.pk %}">delete hotel</a> 
+                                        <li> <b>Hotel</b>:  </li>
+                                             
+                                             
+                                         <ul>
+                                              <li>
+                                                 <b>{{ h.name }}</b> , <b>check-in</b>: {{ h.check_in_date }},
+                                                  <b>check-out</b>:{{ h.check_out_date }}, <b>price</b>: {{ h.price }} 
+                                                  |
+                                                  <a href="{% url 'triplaner:hoteledit' pk=h.pk %}">edit hotel</a> 
+                                                  | 
+                                                  <a href="{% url 'triplaner:hoteldelete' pk=h.pk %}">delete hotel</a> 
+
+                                              </li>
                                         
+                                        </ul>
                                         
-                                        </li>
+                                      
                                    
                                    </ul>
 
@@ -132,15 +136,26 @@
 
                          <ul>
 
-                         <li>  <b>Flight</b> - <b>From</b>: {{ f.from_destination }}, <b>To</b>: {{ f.destination }},
-                              <b>Departure</b>: {{ f.date_time }}, <b>price</b>: {{ f.price }}
-                              |
-                              <a href="{% url 'triplaner:flightedit' pk=f.pk %}">edit flight</a> <!--to edit you need flight pk -->
-                              |
-                              <a href="{% url 'triplaner:flightdelete' pk=f.pk %}">delete flight</a> 
+                         <li>  <b>Flight</b>      </li>
+                              
+                              
+                         <ul>
+
+
+                              <li>
+                                   <b>From</b>: {{ f.from_destination }}, <b>To</b>: {{ f.destination }},
+                                   <b>Departure</b>: {{ f.date_time }}, <b>price</b>: {{ f.price }}
+                                   |
+                                   <a href="{% url 'triplaner:flightedit' pk=f.pk %}">edit flight</a> <!--to edit you need flight pk -->
+                                   |
+                                   <a href="{% url 'triplaner:flightdelete' pk=f.pk %}">delete flight</a> 
+
+                              </li>
+                         </ul>
+                            
                          
                          
-                         </li>
+                    
 
                          </ul>
 
@@ -171,5 +186,10 @@
           passing id in url to add new location page -->
        <a href="{% url 'triplaner:locationadd' pk=trip.id %}">add new location</a>
    
-            
+</div>
+
+
+
+
+
 {% endblock %}

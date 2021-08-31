@@ -1,6 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
 
-
 from django.urls import reverse
 
 from django.http import HttpResponse
@@ -19,6 +18,19 @@ from .models import Profile #importing model from useraccount app
 #decorator is used to check whether the current user is authenticated
 
 
+#these two  functions render
+#templates that are used to display users budget and overall costs using custom inclusion tag, 
+#these templates budget.html and cost.html are then included in base.html then included in base.html
+def my_budget(request):
+    return render(request, "useraccount/budget.html")
+
+def my_cost(request):
+    return render(request, "useraccount/cost.html")
+
+
+
+
+
 
 @login_required
 def dashboard(request):
@@ -28,11 +40,7 @@ def dashboard(request):
     #This is a simple way to define the section that each view corresponds to.
 
   
-    if ProfileEditForm(instance=request.user.profile):
-        profile_form = ProfileEditForm(instance=request.user.profile)
-        print("yes")
-    else:
-        print("no")
+
     all_trips = Trip.objects.filter(user=request.user)
 
 
@@ -40,14 +48,9 @@ def dashboard(request):
     context = {
         'section' : 'dashboard', 
         'all_trips' : all_trips,
-        'profile_form' : profile_form,
-        
-
 
     }
    
-
-    # return render (request, template_name, {'section' : 'dashboard'},context)
     return render (request, template_name, context)
 
 
@@ -87,3 +90,7 @@ def edit(request):
         profile_form = ProfileEditForm(instance=request.user.profile)
 
     return render(request,  template_name, {'profile_form': profile_form})
+
+
+
+   

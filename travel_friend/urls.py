@@ -21,4 +21,6 @@ urlpatterns = [
 
     path('useraccount/', include('useraccount.urls')),
     path('triplaner/', include('triplaner.urls')),
+    #added for social login
+    # path('social-auth/', include('social_django.urls', namespace='social')),
 ]

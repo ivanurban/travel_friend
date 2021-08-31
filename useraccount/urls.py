@@ -35,5 +35,9 @@ urlpatterns = [
 
     path('', views.dashboard, name='dashboard'),
 
+    path('budget/', views.my_budget, name='budget'),
+
+    path('cost/', views.my_cost, name='cost'),
+
 
 ]

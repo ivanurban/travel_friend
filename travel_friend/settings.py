@@ -14,10 +14,7 @@ from pathlib import Path
 
 
 import os
-
 import environ
-
-
 env = environ.Env()
 environ.Env.read_env()
 
@@ -41,7 +38,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    #my app for login, set it first so Django use it first
+    #my app for login, setting it first so Django use it first
     'useraccount.apps.UseraccountConfig',
 
     'django.contrib.admin',
@@ -53,6 +50,9 @@ INSTALLED_APPS = [
 
     #My apps
     'triplaner.apps.TriplanerConfig',
+
+    #third party apps
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -161,5 +161,13 @@ LOGOUT_URL = 'useraccount:logout'
 
 
 
-
+#used for testing mail purpose, it sends an email into the console when user ask for passwoed reset
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+
+
+#make sure it's a tuple, coma at the end! Otherwise error!!
+# AUTHENTICATION_BACKENDS = ('social_core.backends.facebook.FacebookOAuth2', )
+
+
+# SOCIAL_AUTH_FACEBOOK_KEY = '3002758933337715' # Facebook App ID
+# SOCIAL_AUTH_FACEBOOK_SECRET = '071f49d122bf0442cf9ab0050716dfee' # Facebook App Secret

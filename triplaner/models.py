@@ -13,6 +13,7 @@ import string #For generating random string
 # Create your models here.
 
 
+#using random strin generator to generate 12 caracters to add them to slug fild in class Trip,so that slug is unique
 def random_string_generator(str_size, allowed_chars):
     return ''.join(random.choice(allowed_chars) for x in range(str_size))
 
@@ -25,16 +26,8 @@ class Trip(models.Model):
     def __str__(self):
         return self.name
 
-
-    # self.chars = string.ascii_letters + string.punctuation
-    # self.size = 12
-
-
+    #slugify is used to make slug out of entered name in class Trip then added random 12 caracters from random generator
  
-   
-
-    #slugify is used to make slug out of entered name TO DO - make it add the date so it cannot by 
-    #duplicated easily
     def save(self, *args, **kwargs):
         self.chars = string.ascii_letters + string.punctuation
         self.slug = slugify(self.name + random_string_generator(12,self.chars))
@@ -43,22 +36,22 @@ class Trip(models.Model):
 
 
 
-    def get_absolute_url(self):
-        return reverse('useraccount:dashboard')
+    # def get_absolute_url(self):
+    #     return reverse('useraccount:dashboard')
 
 
-    @property 
-    def get_all_costs(self):
-        qs1 = Flight.objects.filter(destination__trip__user=self.user).aggregate(f_expenses=Sum('price'))
+    # @property 
+    # def get_all_costs(self):
+    #     qs1 = Flight.objects.filter(destination__trip__user=self.user).aggregate(f_expenses=Sum('price'))
         
-        qs2 = Hotel.objects.filter(destination__trip__user=self.user).aggregate(h_expenses=Sum('price'))
+    #     qs2 = Hotel.objects.filter(destination__trip__user=self.user).aggregate(h_expenses=Sum('price'))
 
-        if qs1['f_expenses'] == None:
-            qs1['f_expenses'] = 0
-        if qs2['h_expenses'] == None:
-            qs2['h_expenses'] = 0
+    #     if qs1['f_expenses'] == None:
+    #         qs1['f_expenses'] = 0
+    #     if qs2['h_expenses'] == None:
+    #         qs2['h_expenses'] = 0
 
-        return qs1['f_expenses'] + qs2['h_expenses']
+    #     return qs1['f_expenses'] + qs2['h_expenses']
 
 
       
@@ -111,7 +104,9 @@ class Destination(models.Model):
             qs4['h_expenses'] = 0
 
         return qs3['f_expenses'] + qs4['h_expenses']
-  
+
+
+
 class Flight(models.Model):
 
     from_destination = models.CharField(max_length=100, blank=True)
