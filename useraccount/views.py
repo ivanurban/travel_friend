@@ -62,7 +62,7 @@ def register(request):
             # Create a new user object but dont save it now
             new_user = form.save(commit=False)
             # Set the chosen password
-            new_user.set_password(form.cleaned_data['password1'])
+            new_user.set_password(form.cleaned_data['password'])
             # Save the User object
             new_user.save()
             # Create the user profile, when user is registerd the profile created is empty
