@@ -11,7 +11,7 @@ from .models import Profile
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password1 = forms.CharField(label='Password',widget=forms.PasswordInput)
+    password = forms.CharField(label='Password',widget=forms.PasswordInput)
     password2 = forms.CharField(label='Repeat password',widget=forms.PasswordInput)
 
 
@@ -19,9 +19,9 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ('username', 'first_name', 'email')
 
-    def clean_password(self):
+    def clean_password2(self):
         clean_data = self.cleaned_data
-        if clean_data['password1'] != clean_data['password2']:
+        if clean_data['password'] != clean_data['password2']:
             raise forms.ValidationError('Passwords do not match.')
         return clean_data['password2']
 
